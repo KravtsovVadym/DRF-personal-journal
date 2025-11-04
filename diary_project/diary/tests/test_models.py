@@ -25,3 +25,5 @@ class EntryTestCase(TestCase):
         entry.tags.add(tag)
         self.assertEqual(entry.tags.count(), 1)
         self.assertIn(entry, tag.entries.all()) # type: ignore
+
+
