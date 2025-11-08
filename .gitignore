@@ -1,2 +1,11 @@
 # Virtual environment
 /.venv
+
+# bytecode
+*.pyc
+
+# settings IDE
+.vscode
+
+# date base
+*.sqlite3
