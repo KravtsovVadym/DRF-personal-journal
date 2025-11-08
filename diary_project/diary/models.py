@@ -1,31 +1,44 @@
-from django.conf import settings
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 class Entry(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField('Tag', related_name='entries', blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        db_index=True,
+        null=False,
+        verbose_name="Author",
+        help_text="Name of the author"
+        )
+    title = models.CharField(
+        verbose_name="Title",
+        max_length=100,
+        db_index=True,
+        blank=False,
+        null=False,
+        help_text="Specify the name of the content"
+        )
+    content = models.TextField(
+        verbose_name="Content",
+        max_length=500,
+        blank=False,
+        null=False,
+        help_text="Enter content"
+    )
+    created_at = models.DateTimeField(
+        verbose_name="Created",
+        db_index=True,
+        auto_now_add=True,
+        help_text="Date of creation"
+    )
+    updated_at = models.DateTimeField(
+        verbose_name="Updated",
+        db_index=True,
+        auto_now=True,
+        help_text="Date update"
+    )
 
-    def __str__(self):
-        return self.title
-    
     class Meta:
-        ordering = ['-created']
-        verbose_name = 'record'
-        verbose_name_plural = 'records'
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'tag'
-        verbose_name_plural = 'tags'
+        pass
