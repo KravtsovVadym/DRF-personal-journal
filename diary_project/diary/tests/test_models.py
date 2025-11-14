@@ -11,12 +11,18 @@ class TagCaseTest(TestCase):
     def setUpTestData(cls):
         cls.tag = Tag.objects.create(name="Training")
 
-    """Test for the uniqueness of the tag name"""
+    """ Test for the uniqueness of the tag name """
     def test_case_unique(self):
         with self.assertRaises(IntegrityError):
             Tag.objects.create(name="Training")
-    
 
+    """ We check the __str__ class Tag method"""
+    def test_case_str_method(self):
+        self.assertEqual(str(self.tag.name), "Training")
+    
+    """ Check for the case of the uniqueness of the Tag name """
+    def test_case_register_unique(self):
+        pass
 
 
 class EntryCaseTest(TestCase):
@@ -24,6 +30,7 @@ class EntryCaseTest(TestCase):
     def setUp(self):
         self.author = User.objects.create_user(username="Vadim")
 
+    """ A test case to validate the models.CASCADE method """
     def test_case_delete(self):
         Entry.objects.create(
             author=self.author,
@@ -33,6 +40,7 @@ class EntryCaseTest(TestCase):
         self.author.delete()
         self.assertEqual(Entry.objects.count(), 0)
 
+    """ We connect and check the tag, class ManyToManyField """
     def test_case_many_to_many(self):
         self.entry = Entry.objects.create(
             author=self.author,
