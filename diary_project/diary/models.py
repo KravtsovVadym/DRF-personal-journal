@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import Lower
 from django.conf import settings
 
 
@@ -10,6 +11,13 @@ class Tag(models.Model):
         db_index=True,
     )
     class Meta:
+        """Constraints case-sensitive uniqueness check"""
+        constraints= [
+            models.UniqueConstraint(
+                Lower("name"),
+                name="Unique_lower_name_tagname"
+                )
+        ]
         ordering = ["name"]
         verbose_name = "Tag"
         verbose_name_plural = "Tags"

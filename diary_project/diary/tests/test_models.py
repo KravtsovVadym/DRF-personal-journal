@@ -22,7 +22,8 @@ class TagCaseTest(TestCase):
     
     """ Check for the case of the uniqueness of the Tag name """
     def test_case_register_unique(self):
-        pass
+        with self.assertRaises(IntegrityError):
+            Tag.objects.create(name="training")
 
 
 class EntryCaseTest(TestCase):
@@ -49,5 +50,5 @@ class EntryCaseTest(TestCase):
         tag = Tag.objects.create(name="Developers")
         self.entry.tags.add(tag)
         self.assertEqual(self.entry.tags.count(), 1)
-        self.assertIn(self.entry, tag.entries.all())
+        self.assertIn(self.entry, tag.entries.all()) # type: ignore
     
