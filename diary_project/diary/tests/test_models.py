@@ -21,11 +21,15 @@ class TagCaseTest(TestCase):
         self.assertEqual(str(self.tag.name), "Training")
     
     """ Check for the case of the uniqueness of the Tag name """
-    def test_case_register_unique(self):
+    def test_case_unique_register_tag(self):
         with self.assertRaises(IntegrityError):
             Tag.objects.create(name="training")
-
-
+    
+    def test_case_count_tags(self):
+        Tag.objects.create(name="C++")
+        setattr(Tag, "name", "Java")
+        self.assertEqual(Tag.objects.count(), 2)
+        
 class EntryCaseTest(TestCase):
     """ Creates a new object each time for each test """
     def setUp(self):
@@ -52,3 +56,8 @@ class EntryCaseTest(TestCase):
         self.assertEqual(self.entry.tags.count(), 1)
         self.assertIn(self.entry, tag.entries.all()) # type: ignore
     
+    """ Checking the __str__ method """
+    """We make a reflection with the help of a function setattr() """
+    def test_case_method_str(self):
+        setattr(Entry, "title", "test header")
+        self.assertEqual(str(Entry.title), "test header")
