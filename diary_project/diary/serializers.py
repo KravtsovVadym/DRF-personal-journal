@@ -1,15 +1,19 @@
 from rest_framework import serializers
-from diary.models import Entry, Tag
+from .models import Tag, Entry
 from django.contrib.auth import get_user_model
 
-User = get_user_model()  
+User = get_user_model()
 
-
-class TagSerializer(serializers.ModelSerializer):
+class TagSerializers(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        field = ['id', 'name']
+        field = ["id", "name"]
 
-class EntrySerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, read_only=True)
-    pass
+class EntrySerializers(serializers.ModelSerializer):
+    tags = TagSerializers(many=True, read_only=True)
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        many=True,
+        write_only=True,
+        source="tags"
+    )
