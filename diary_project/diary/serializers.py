@@ -4,13 +4,13 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class TagSerializers(serializers.ModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        field = ["id", "name"]
+        fields = ["id", "name"]
 
-class EntrySerializers(serializers.ModelSerializer):
-    tags = TagSerializers(many=True, read_only=True)
+class EntrySerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True, read_only=True)
     tag_ids = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(),
         many=True,  
@@ -24,17 +24,17 @@ class EntrySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Entry
-        field = [
+        fields = [
             "id",
             "title",
             "tags",
-            "tag_id",
+            "tag_ids",
             "context",
             "create",
             "update",
             "author_username",
             ]
-        read_only_field = [
+        read_only_fields = [
             "id",
             "created",
             "update",
@@ -55,3 +55,4 @@ class EntrySerializers(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.set(tags)
         return instance
+    
