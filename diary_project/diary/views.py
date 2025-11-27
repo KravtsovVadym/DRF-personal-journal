@@ -10,3 +10,11 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.author == request.user
+
+class EntryViewSet(viewsets.ModelViewSet):
+    serializer_class = EntrySerializer
+    permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["title", "content","tags__name"]
+    ordering_fields = ["created"]
+    ordering = ["-created"]
