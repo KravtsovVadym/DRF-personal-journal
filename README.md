@@ -45,7 +45,3 @@ diary_project/
 ├── manage.py
 └── requirements.txt
 ```
-
-## Status
-
-🚧 Under development — JWT, advanced filtering, documentation expected
